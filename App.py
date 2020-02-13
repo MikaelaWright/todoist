@@ -4,26 +4,25 @@ sys.path.insert(0, 'models')
 sys.path.insert(1, 'core')
 from Todo import *
 from TodoService import *
+from flask import Flask
+from flask_restful import Resource, Api
+
 
 choice = " "
 todoService = TodoService()
 
-while choice != "Q":
-    choice = input("Enter C,R,U,D or Q to quit\n")
-    if choice == "C":
-        desc = input("Enter item description:\n")
-        todoService.create(desc)
+app = Flask(__name__)
+api = Api(app)
 
-    if choice == "R":
-        lst = todoService.retrieve()
-        for i in lst:
-            print(i.desc)
 
-    if choice == "U":
-        idx = int(input("Enter idx of item to be updated:\n"))
-        new_desc = input("Enter new desc of item:\n")
-        todoService.update(new_desc, idx)
+class WebApp(Resource):
+    def get(self):
+        t = Todo()
+        t.desc = "yaay!"
+        return t.__dict__
 
-    if choice == "D":
-        idx = int(input("Enter idx of item to be deleted:\n"))
-        todoService.delete(idx)
+
+api.add_resource(WebApp, '/')
+
+if __name__ == '__main__':
+    app.run(debug=True)
