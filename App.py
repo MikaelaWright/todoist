@@ -44,7 +44,7 @@ class TodoApi(Resource):
         return json.dumps([ob.__dict__ for ob in lst])
 
 
-api.add_resource(TodoApi, '/mika')
+api.add_resource(TodoApi, '/todos')
 
 if __name__ == '__main__':
     app.run(debug=True)
