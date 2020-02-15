@@ -10,6 +10,8 @@ import json
 from flask import request
 
 choice = " "
+
+# instantiation
 todoService = TodoService()
 
 app = Flask(__name__)
@@ -17,6 +19,20 @@ api = Api(app)
 
 
 class TodoApi(Resource):
+
+    def delete(self):
+        json_data = request.get_json(force=True)
+        idx = json_data['idx']
+        todoService.delete(idx)
+        return "delete done!"
+
+    def put(self):
+        json_data = request.get_json(force=True)
+        desc = json_data['desc']
+        idx = json_data['idx']
+        todoService.update(desc, idx)
+        return "update done!"
+
     def post(self):
         json_data = request.get_json(force=True)
         desc = json_data['desc']
@@ -28,7 +44,7 @@ class TodoApi(Resource):
         return json.dumps([ob.__dict__ for ob in lst])
 
 
-api.add_resource(TodoApi, '/')
+api.add_resource(TodoApi, '/mika')
 
 if __name__ == '__main__':
     app.run(debug=True)
